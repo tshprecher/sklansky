@@ -1,22 +1,31 @@
 import * as React from 'react';
 import './App.css';
 
-import logo from './logo.svg';
+enum Suit {
+    Clubs = 1,
+    Diamonds,
+    Hearts,
+    Spades
+}
+
+enum Value {
+    One, Two, Three, Four, Five, Six, Seven,
+    Eight, Nine, Ten, Jack, Queen, King, Ace
+}
+
+interface
+
 
 class App extends React.Component {
-  public render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+    public render() {
+        return (
+            <div className="App">
+                <header>
+                    <h1 className="App-title">Learn Your Sklansky Table</h1>
+                </header>
+            </div>
+        );
+    }
 }
 
 export default App;
