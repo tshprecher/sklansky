@@ -46,7 +46,7 @@ class Card {
             [Suit.Spades, "S"],
         ]);
 
-        return strVal[this.value] + strSuit[this.suit];
+        return `${strVal.get(this.value)}${strSuit.get(this.suit)}`;
     }
 }
 
@@ -228,6 +228,11 @@ function AnswerPanel(props: any) {
 }
 
 class App extends React.Component {
+    constructor(props: any) {
+        super(props)
+        this.state = {}
+    }
+
     private handleClick(val: number) {
         console.log(val)
     }
@@ -239,7 +244,8 @@ class App extends React.Component {
                     <h1 className="App-title">Learn Your Sklansky Table</h1>
                 </header>
                 <div>
-                    TODO: fill in cards + {new Card(Value.Ace, Suit.Clubs).toString()}
+                    <img src={`/svgs/${new Card(Value.Ace, Suit.Clubs).toString()}.svg`} />
+                    <img src={`/svgs/${new Card(Value.Ace, Suit.Diamonds).toString()}.svg`} />
                 </div>
                 <div>
                     Test: Slansky rank of AA: + {getSklanskyValue(new StartingHand(Value.Ace, Value.King, false))}
