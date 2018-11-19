@@ -211,15 +211,27 @@ function getSklanskyValue(hand: StartingHand): number {
 
 // Views
 
-/*function SklanskyCell({ startingHand: StartingHand }) {
+function AnswerPanel(props: any) {
     return (
-        <div className="hello">
-            TODO: fill in sklansky cell
-      </div>
+        <div>
+            <button onClick={() => { props.onClickHandler(1) }}>1</button>
+            <button onClick={() => { props.onClickHandler(2) }}>2</button>
+            <button onClick={() => { props.onClickHandler(3) }}>3</button>
+            <button onClick={() => { props.onClickHandler(4) }}>4</button>
+            <button onClick={() => { props.onClickHandler(5) }}>5</button>
+            <button onClick={() => { props.onClickHandler(6) }}>6</button>
+            <button onClick={() => { props.onClickHandler(7) }}>7</button>
+            <button onClick={() => { props.onClickHandler(8) }}>8</button>
+            <button onClick={() => { props.onClickHandler(-1) }}>never</button>
+        </div>
     );
-}*/
+}
 
 class App extends React.Component {
+    private handleClick(val: number) {
+        console.log(val)
+    }
+
     public render() {
         return (
             <div className="App">
@@ -232,9 +244,7 @@ class App extends React.Component {
                 <div>
                     Test: Slansky rank of AA: + {getSklanskyValue(new StartingHand(Value.Ace, Value.King, false))}
                 </div>
-                <div>
-
-                </div>
+                <AnswerPanel onClickHandler={this.handleClick} />
             </div>
         );
     }
