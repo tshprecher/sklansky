@@ -10,10 +10,15 @@ enum Suit {
     Spades
 }
 
+const suits: Array<Suit> = [Suit.Clubs, Suit.Diamonds, Suit.Hearts, Suit.Spades];
+
 enum Value {
     Two = 2, Three, Four, Five, Six, Seven,
     Eight, Nine, Ten, Jack, Queen, King, Ace
 }
+
+const values: Array<Value> = [Value.Two, Value.Three, Value.Four, Value.Five, Value.Six, Value.Seven,
+                              Value.Eight, Value.Nine, Value.Ten, Value.Jack, Value.Queen, Value.King, Value.Ace];
 
 class Card {
     value: Value;
@@ -209,6 +214,18 @@ function getSklanskyValue(hand: StartingHand): number {
     return -1;
 }
 
+function randomHand(): StartingHand {    
+    while (true) {
+        let val1: Value = values[Math.floor(Math.random() * 13)]
+        let val2: Value = values[Math.floor(Math.random() * 13)]
+        let suited: boolean = (Math.floor(Math.random() * 2) === 0)
+        if (val1 === val2 && suited === true) {
+            continue
+        }
+        return new StartingHand(val1, val2, suited);
+    }
+}
+
 // Views
 
 function AnswerPanel(props: any) {
@@ -227,10 +244,14 @@ function AnswerPanel(props: any) {
     );
 }
 
-class App extends React.Component {
+type AppState = { currentHand: StartingHand }
+
+class App extends React.Component<{}, AppState> {
     constructor(props: any) {
         super(props)
-        this.state = {}
+        this.state = {
+            currentHand: randomHand(),
+        }
     }
 
     private handleClick(val: number) {
@@ -238,17 +259,27 @@ class App extends React.Component {
     }
 
     public render() {
+        // denormalize a starting hand into a distinct cards
+        let suit1: Suit, suit2: Suit;
+        suit1 = suits[Math.floor(Math.random() * 4)]
+        suit2 = suits[Math.floor(Math.random() * 4)]
+        let currentHand: StartingHand = this.state.currentHand;
+        while (currentHand.value1 === currentHand.value2 && suit1 === suit2) {
+            suit2 = suits[Math.floor(Math.random() * 4)];
+        }
+        
+
         return (
             <div className="App">
                 <header>
                     <h1 className="App-title">Learn Your Sklansky Table</h1>
                 </header>
                 <div>
-                    <img src={`/svgs/${new Card(Value.Ace, Suit.Clubs).toString()}.svg`} />
-                    <img src={`/svgs/${new Card(Value.Ace, Suit.Diamonds).toString()}.svg`} />
+                    <img src={`/svgs/${new Card(currentHand.value1, suit1).toString()}.svg`} />
+                    <img src={`/svgs/${new Card(currentHand.value2, suit2).toString()}.svg`} />
                 </div>
                 <div>
-                    Test: Slansky rank of AA: + {getSklanskyValue(new StartingHand(Value.Ace, Value.King, false))}
+                    Slansky rank: {getSklanskyValue(currentHand)}
                 </div>
                 <AnswerPanel onClickHandler={this.handleClick} />
             </div>
