@@ -18,7 +18,7 @@ enum Value {
 }
 
 const values: Array<Value> = [Value.Two, Value.Three, Value.Four, Value.Five, Value.Six, Value.Seven,
-                              Value.Eight, Value.Nine, Value.Ten, Value.Jack, Value.Queen, Value.King, Value.Ace];
+Value.Eight, Value.Nine, Value.Ten, Value.Jack, Value.Queen, Value.King, Value.Ace];
 
 class Card {
     value: Value;
@@ -52,6 +52,10 @@ class Card {
         ]);
 
         return `${strVal.get(this.value)}${strSuit.get(this.suit)}`;
+    }
+
+    equals(other: Card): boolean {
+        return this.value === other.value && this.suit === other.suit;
     }
 }
 
@@ -214,18 +218,6 @@ function getSklanskyValue(hand: StartingHand): number {
     return -1;
 }
 
-function randomHand(): StartingHand {    
-    while (true) {
-        let val1: Value = values[Math.floor(Math.random() * 13)]
-        let val2: Value = values[Math.floor(Math.random() * 13)]
-        let suited: boolean = (Math.floor(Math.random() * 2) === 0)
-        if (val1 === val2 && suited === true) {
-            continue
-        }
-        return new StartingHand(val1, val2, suited);
-    }
-}
-
 // Views
 
 function AnswerPanel(props: any) {
@@ -244,30 +236,58 @@ function AnswerPanel(props: any) {
     );
 }
 
-type AppState = { currentHand: StartingHand }
+function ResultPanel(props: any) {
+    let classSuffix: string;
+    let message: string = "";
+    if (props.result === undefined) {
+        classSuffix = "none";
+    } else {
+        let result: boolean = props.result;
+        classSuffix = result ? "true" : "false";
+        message = result ? "Correct!" : "Incorrect. No worries. Try again!";
+    }
+
+    return (
+        <div className={"App-result-" + classSuffix}>{message}</div>
+    );
+}
+
+type AppState = {
+    card1: Card,
+    card2: Card,
+    answer?: number,
+}
 
 class App extends React.Component<{}, AppState> {
     constructor(props: any) {
         super(props)
-        this.state = {
-            currentHand: randomHand(),
-        }
+        this.state = this.resetState();
+        this.handleClick = this.handleClick.bind(this);
     }
 
     private handleClick(val: number) {
         console.log(val)
+        this.setState({ ...this.state, answer: val });
+    }
+
+    private resetState(): AppState {
+        let card1 = new Card(values[Math.floor(Math.random() * 13)], suits[Math.floor(Math.random() * 4)]);
+        let card2 = new Card(values[Math.floor(Math.random() * 13)], suits[Math.floor(Math.random() * 4)]);
+        while (card1.equals(card2)) {
+            card2 = new Card(values[Math.floor(Math.random() * 13)], suits[Math.floor(Math.random() * 4)]);
+        }
+        return { card1: card1, card2: card2, answer: undefined };
     }
 
     public render() {
-        // denormalize a starting hand into a distinct cards
-        let suit1: Suit, suit2: Suit;
-        suit1 = suits[Math.floor(Math.random() * 4)]
-        suit2 = suits[Math.floor(Math.random() * 4)]
-        let currentHand: StartingHand = this.state.currentHand;
-        while (currentHand.value1 === currentHand.value2 && suit1 === suit2) {
-            suit2 = suits[Math.floor(Math.random() * 4)];
+        let hand = new StartingHand(this.state.card1.value, this.state.card2.value, this.state.card1.suit === this.state.card2.suit)
+
+        // show the result if there's an answer
+        let result;
+        if (this.state.answer !== undefined) {
+            let correct = getSklanskyValue(hand);
+            result = this.state.answer === correct;
         }
-        
 
         return (
             <div className="App">
@@ -275,13 +295,14 @@ class App extends React.Component<{}, AppState> {
                     <h1 className="App-title">Learn Your Sklansky Table</h1>
                 </header>
                 <div>
-                    <img src={`/svgs/${new Card(currentHand.value1, suit1).toString()}.svg`} />
-                    <img src={`/svgs/${new Card(currentHand.value2, suit2).toString()}.svg`} />
+                    <img src={`/svgs/${this.state.card1.toString()}.svg`} />
+                    <img src={`/svgs/${this.state.card2.toString()}.svg`} />
                 </div>
                 <div>
-                    Slansky rank: {getSklanskyValue(currentHand)}
+                    Slansky rank: {getSklanskyValue(hand)}
                 </div>
                 <AnswerPanel onClickHandler={this.handleClick} />
+                <ResultPanel result={result} />
             </div>
         );
     }
