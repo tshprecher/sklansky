@@ -10,21 +10,44 @@
 
 .App-title {
   font-size: 1.5em;
-  background-color: aquamarine;
+  background-color: #BFCFEC;
 }
 
-.App-result-none {
+.App-card {
+  width: 15%;
+  height: 15%;
+}
+
+.App-message {
+  line-height: 40px;
+  height: 40px;
+  width: 20%;
+  margin-left: 40%;
   visibility: hidden;
 }
 
-.App-result-true {
+.App-message-correct {
+  line-height: 40px;
+  height: 40px;
+  width: 20%;
+  margin-left: 40%;
   visibility: visible;
-  background-color: green;
+  background-color: #81EF94;
 }
 
-.App-result-false {
+.App-message-incorrect {
+  line-height: 40px;
+  height: 40px;
+  width: 20%;
+  margin-left: 40%;
   visibility: visible;
-  background-color: red;
+  background-color: #DF4747;
+}
+
+.App-answer-select {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
 }
 
 @keyframes App-logo-spin {

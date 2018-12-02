@@ -221,34 +221,55 @@ function getSklanskyValue(hand: StartingHand): number {
 // Views
 
 function AnswerPanel(props: any) {
+    let selected: Set<number> = props.selected;
     return (
         <div>
-            <button onClick={() => { props.onClickHandler(1) }}>1</button>
-            <button onClick={() => { props.onClickHandler(2) }}>2</button>
-            <button onClick={() => { props.onClickHandler(3) }}>3</button>
-            <button onClick={() => { props.onClickHandler(4) }}>4</button>
-            <button onClick={() => { props.onClickHandler(5) }}>5</button>
-            <button onClick={() => { props.onClickHandler(6) }}>6</button>
-            <button onClick={() => { props.onClickHandler(7) }}>7</button>
-            <button onClick={() => { props.onClickHandler(8) }}>8</button>
-            <button onClick={() => { props.onClickHandler(-1) }}>never</button>
+            <div className="App-answer-select">
+                <button onClick={() => { props.onClickHandler(1) }} disabled={!selected.has(1)}>1</button>
+                <div><input type="checkbox" checked={selected.has(1)} onChange={() => { props.onChangeHandler(1) }} /></div>
+            </div>
+            <div className="App-answer-select" >
+                <button onClick={() => { props.onClickHandler(2) }} disabled={!selected.has(2)}>2</button>
+                <div><input type="checkbox" checked={selected.has(2)} onChange={() => { props.onChangeHandler(2) }} /></div>
+            </div>
+            <div className="App-answer-select">
+                <button onClick={() => { props.onClickHandler(3) }} disabled={!selected.has(3)}>3</button>
+                <div><input type="checkbox" checked={selected.has(3)} onChange={() => { props.onChangeHandler(3) }} /></div>
+            </div>
+            <div className="App-answer-select">
+                <button onClick={() => { props.onClickHandler(4) }} disabled={!selected.has(4)}>4</button>
+                <div><input type="checkbox" checked={selected.has(4)} onChange={() => { props.onChangeHandler(4) }} /></div>
+            </div>
+            <div className="App-answer-select">
+                <button onClick={() => { props.onClickHandler(5) }} disabled={!selected.has(5)}>5</button>
+                <div><input type="checkbox" checked={selected.has(5)} onChange={() => { props.onChangeHandler(5) }} /></div>
+            </div>
+            <div className="App-answer-select">
+                <button onClick={() => { props.onClickHandler(6) }} disabled={!selected.has(6)}>6</button>
+                <div><input type="checkbox" checked={selected.has(6)} onChange={() => { props.onChangeHandler(6) }} /></div>
+            </div>
+            <div className="App-answer-select">
+                <button onClick={() => { props.onClickHandler(7) }} disabled={!selected.has(7)}>7</button>
+                <div><input type="checkbox" checked={selected.has(7)} onChange={() => { props.onChangeHandler(7) }} /></div>
+            </div>
+            <div className="App-answer-select">
+                <button onClick={() => { props.onClickHandler(8) }} disabled={!selected.has(8)}>8</button>
+                <div><input type="checkbox" checked={selected.has(8)} onChange={() => { props.onChangeHandler(8) }} /></div>
+            </div>
+            <div className="App-answer-select">
+                <button onClick={() => { props.onClickHandler(-1) }} disabled={!selected.has(-1)}>never</button>
+                <div><input type="checkbox" checked={selected.has(-1)} onChange={() => { props.onChangeHandler(-1) }} /></div>
+            </div>
         </div>
+
     );
 }
 
-function ResultPanel(props: any) {
-    let classSuffix: string;
-    let message: string = "";
-    if (props.result === undefined) {
-        classSuffix = "none";
-    } else {
-        let result: boolean = props.result;
-        classSuffix = result ? "true" : "false";
-        message = result ? "Correct!" : "Incorrect. No worries. Try again!";
-    }
-
+function MessagePanel(props: any) {
     return (
-        <div className={"App-result-" + classSuffix}>{message}</div>
+        <div className={"App-message" + "-" + props.classSuffix}>
+            {props.message}
+        </div>
     );
 }
 
@@ -256,53 +277,76 @@ type AppState = {
     card1: Card,
     card2: Card,
     answer?: number,
+    selected: Set<number>,
 }
 
 class App extends React.Component<{}, AppState> {
     constructor(props: any) {
         super(props)
-        this.state = this.resetState();
-        this.handleClick = this.handleClick.bind(this);
+
+        // init state
+        let selected = (new Set<number>()).add(1).add(2).add(3).add(4).add(5).add(6).add(7).add(8).add(-1);
+        this.state = { card1: new Card(Value.Ace, Suit.Clubs), card2: new Card(Value.Ace, Suit.Clubs), answer: undefined, selected: selected };
+        this.state = { ...this.resetHand() };
+
+        this.handleUserInput = this.handleUserInput.bind(this);
+        this.handleSelectChange = this.handleSelectChange.bind(this);
+        this.resetHand = this.resetHand.bind(this);
     }
 
-    private handleClick(val: number) {
-        console.log(val)
-        this.setState({ ...this.state, answer: val });
+    private handleUserInput(val: number) {
+        console.log(val);
+        if (this.state.answer === undefined) {
+            this.setState({ ...this.state, answer: val });
+        }
     }
 
-    private resetState(): AppState {
+    private handleSelectChange(val: number) {
+        console.log("changed " + val);
+        let selected: Set<number> = this.state.selected;
+        if (selected.has(val)) {
+            console.log("selected size: " + selected.size);
+            console.log("selected has value 1: " + selected.has(val));
+            selected.size === 1 ? alert("At least one option must be selected") : selected.delete(val);
+        } else {
+            console.log("selected has value 2: " + selected.has(val));
+            selected.add(val);
+        }
+        this.setState({ ...this.state, selected: selected });
+        if (!selected.has(val)) {
+            this.setState(this.resetHand());
+        }
+    }
+
+    private resetHand(): AppState {
         let card1 = new Card(values[Math.floor(Math.random() * 13)], suits[Math.floor(Math.random() * 4)]);
         let card2 = new Card(values[Math.floor(Math.random() * 13)], suits[Math.floor(Math.random() * 4)]);
-        while (card1.equals(card2)) {
+        let hand = new StartingHand(card1.value, card2.value, card1.suit === card2.suit);
+        while (card1.equals(card2) || !this.state.selected.has(getSklanskyValue(hand))) {
             card2 = new Card(values[Math.floor(Math.random() * 13)], suits[Math.floor(Math.random() * 4)]);
+            hand = new StartingHand(card1.value, card2.value, card1.suit === card2.suit);
         }
-        return { card1: card1, card2: card2, answer: undefined };
+        return { ...this.state, card1: card1, card2: card2, answer: undefined };
     }
 
     public render() {
         let hand = new StartingHand(this.state.card1.value, this.state.card2.value, this.state.card1.suit === this.state.card2.suit)
-
-        // show the result if there's an answer
-        let result;
-        if (this.state.answer !== undefined) {
-            let correct = getSklanskyValue(hand);
-            result = this.state.answer === correct;
-        }
-
         return (
             <div className="App">
                 <header>
-                    <h1 className="App-title">Learn Your Sklansky Table</h1>
+                    <h1 className="App-title">Learn Your Sklansky Starting Hands!</h1>
                 </header>
                 <div>
-                    <img src={`/svgs/${this.state.card1.toString()}.svg`} />
-                    <img src={`/svgs/${this.state.card2.toString()}.svg`} />
+                    <img className="App-card" src={`/svgs/${this.state.card1.toString()}.svg`} />
+                    <img className="App-card" src={`/svgs/${this.state.card2.toString()}.svg`} />
                 </div>
                 <div>
                     Slansky rank: {getSklanskyValue(hand)}
                 </div>
-                <AnswerPanel onClickHandler={this.handleClick} />
-                <ResultPanel result={result} />
+                <AnswerPanel onClickHandler={this.handleUserInput} onChangeHandler={this.handleSelectChange} selected={this.state.selected} />
+                {this.state.answer !== undefined && (
+                    (this.state.answer === getSklanskyValue(hand) && <MessagePanel classSuffix={"correct"} message={"Correct!"} />) ||
+                    (this.state.answer !== getSklanskyValue(hand) && <MessagePanel classSuffix={"incorrect"} message={"Incorrect :("} />))}
             </div>
         );
     }
