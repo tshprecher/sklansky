@@ -357,7 +357,7 @@ class App extends React.Component<{}, AppState> {
                     <h1 className="App-title">Learn Your Sklansky Starting Hands!</h1>
                 </header>
                 <div className="App-instructions" >
-                    Press numeric keys 1-9 to answer, 0 for never and 'n' to move to the next hand.
+                    Press numeric keys 1-8 to answer, 0 for never and 'n' to move to the next hand.
                     </div>
                 <div>
                     <img className="App-card" src={`/svgs/${this.state.card1.toString()}.svg`} />
