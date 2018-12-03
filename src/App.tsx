@@ -356,17 +356,17 @@ class App extends React.Component<{}, AppState> {
                 <header>
                     <h1 className="App-title">Learn Your Sklansky Starting Hands!</h1>
                 </header>
+                <div className="App-instructions" >
+                    Press numeric keys 1-9 to answer, 0 for never and 'n' to move to the next hand.
+                    </div>
                 <div>
                     <img className="App-card" src={`/svgs/${this.state.card1.toString()}.svg`} />
                     <img className="App-card" src={`/svgs/${this.state.card2.toString()}.svg`} />
                 </div>
-                <div>
-                    Slansky rank: {getSklanskyValue(hand)}
-                </div>
                 <AnswerPanel onClickHandler={this.handleUserInput} onChangeHandler={this.handleSelectChange} selected={this.state.selected} />
                 {this.state.answer !== undefined && (
                     (this.state.answer === getSklanskyValue(hand) && <MessagePanel classSuffix={"correct"} message={"Correct!"} />) ||
-                    (this.state.answer !== getSklanskyValue(hand) && <MessagePanel classSuffix={"incorrect"} message={"Incorrect :("} />))}
+                    (this.state.answer !== getSklanskyValue(hand) && <MessagePanel classSuffix={"incorrect"} message={"Incorrect :(. Correct answer is " + (getSklanskyValue(hand) !== -1 ? getSklanskyValue(hand) : "never") + "."} />))}
             </div>
         );
     }

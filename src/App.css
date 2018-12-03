@@ -13,24 +13,31 @@
   background-color: #BFCFEC;
 }
 
+.App-instructions {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #BFCFEC;
+  width: 50%;
+  height: 40px;
+  line-height: 40px;
+  margin-left: 25%;
+  margin-bottom: 20px;
+}
+
 .App-card {
   width: 15%;
   height: 15%;
 }
 
 .App-message {
-  line-height: 40px;
-  height: 40px;
-  width: 20%;
-  margin-left: 40%;
   visibility: hidden;
 }
 
 .App-message-correct {
   line-height: 40px;
   height: 40px;
-  width: 20%;
-  margin-left: 40%;
+  width: 30%;
+  margin-left: 35%;
   visibility: visible;
   background-color: #81EF94;
 }
@@ -38,8 +45,8 @@
 .App-message-incorrect {
   line-height: 40px;
   height: 40px;
-  width: 20%;
-  margin-left: 40%;
+  width: 30%;
+  margin-left: 35%;
   visibility: visible;
   background-color: #DF4747;
 }
