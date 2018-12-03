@@ -5,7 +5,7 @@
   "dependencies": {
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts-ts": "3.1.0"
+    "react-scripts-ts": "^4.0.8"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -18,6 +18,8 @@
     "@types/node": "^10.12.9",
     "@types/react": "^16.7.6",
     "@types/react-dom": "^16.0.9",
-    "typescript": "^3.1.6"
+    "typescript": "^3.1.6",
+    "webpack": "^4.26.1",
+    "webpack-cli": "^3.1.2"
   }
 }
