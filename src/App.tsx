@@ -291,25 +291,43 @@ class App extends React.Component<{}, AppState> {
 
         this.handleUserInput = this.handleUserInput.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.resetHand = this.resetHand.bind(this);
     }
 
+    componentDidMount() {
+        document.addEventListener('keypress', this.handleKeyPress);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keypress', this.handleKeyPress);
+    }
+
+    private handleKeyPress(event: any) {
+        console.log("keypress event: ", event.keyCode);
+        let code: number = event.keyCode;
+        if (code === 110) { // TODO: make this space bar
+            this.setState(this.resetHand());
+        } else if (code === 48) {
+            this.handleUserInput(-1);
+        } else if (code >= 49 && code <= 56) {
+            this.handleUserInput(code - 49 + 1)
+        }
+    }
+
     private handleUserInput(val: number) {
-        console.log(val);
+        console.log("user answer: ", val);
         if (this.state.answer === undefined) {
             this.setState({ ...this.state, answer: val });
         }
     }
 
     private handleSelectChange(val: number) {
-        console.log("changed " + val);
+        console.log("select changed: ", val);
         let selected: Set<number> = this.state.selected;
         if (selected.has(val)) {
-            console.log("selected size: " + selected.size);
-            console.log("selected has value 1: " + selected.has(val));
             selected.size === 1 ? alert("At least one option must be selected") : selected.delete(val);
         } else {
-            console.log("selected has value 2: " + selected.has(val));
             selected.add(val);
         }
         this.setState({ ...this.state, selected: selected });
@@ -319,10 +337,12 @@ class App extends React.Component<{}, AppState> {
     }
 
     private resetHand(): AppState {
-        let card1 = new Card(values[Math.floor(Math.random() * 13)], suits[Math.floor(Math.random() * 4)]);
-        let card2 = new Card(values[Math.floor(Math.random() * 13)], suits[Math.floor(Math.random() * 4)]);
-        let hand = new StartingHand(card1.value, card2.value, card1.suit === card2.suit);
+        let card1: Card = new Card(Value.Ace, Suit.Clubs)
+        let card2: Card = new Card(Value.Ace, Suit.Clubs);
+        let hand: StartingHand = new StartingHand(card1.value, card2.value, true);
+
         while (card1.equals(card2) || !this.state.selected.has(getSklanskyValue(hand))) {
+            card1 = new Card(values[Math.floor(Math.random() * 13)], suits[Math.floor(Math.random() * 4)]);
             card2 = new Card(values[Math.floor(Math.random() * 13)], suits[Math.floor(Math.random() * 4)]);
             hand = new StartingHand(card1.value, card2.value, card1.suit === card2.suit);
         }
