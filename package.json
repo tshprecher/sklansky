@@ -1,5 +1,6 @@
 {
   "name": "sklansky",
+  "homepage": "http://tshprecher.github.io/sklansky",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -11,7 +12,9 @@
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "@types/jest": "^23.3.9",
@@ -19,7 +22,12 @@
     "@types/react": "^16.7.6",
     "@types/react-dom": "^16.0.9",
     "typescript": "^3.1.6",
-    "webpack": "^4.26.1",
-    "webpack-cli": "^3.1.2"
-  }
+    "gh-pages": "^1.1.0"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
