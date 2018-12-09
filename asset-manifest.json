@@ -1,13 +1,13 @@
 {
   "main.css": "/sklansky/static/css/main.a69e6db3.chunk.css",
-  "main.js": "/sklansky/static/js/main.01364a1a.chunk.js",
-  "main.js.map": "/sklansky/static/js/main.01364a1a.chunk.js.map",
+  "main.js": "/sklansky/static/js/main.05bbb437.chunk.js",
+  "main.js.map": "/sklansky/static/js/main.05bbb437.chunk.js.map",
   "static/js/1.d34cca0a.chunk.js": "/sklansky/static/js/1.d34cca0a.chunk.js",
   "static/js/1.d34cca0a.chunk.js.map": "/sklansky/static/js/1.d34cca0a.chunk.js.map",
   "runtime~main.js": "/sklansky/static/js/runtime~main.d52b95c2.js",
   "runtime~main.js.map": "/sklansky/static/js/runtime~main.d52b95c2.js.map",
   "static/css/main.a69e6db3.chunk.css.map": "/sklansky/static/css/main.a69e6db3.chunk.css.map",
   "index.html": "/sklansky/index.html",
-  "precache-manifest.720c88eda3b7e2c35fcf53b641d38c9f.js": "/sklansky/precache-manifest.720c88eda3b7e2c35fcf53b641d38c9f.js",
+  "precache-manifest.cbdc6928badf6fb7411158dc7a7babb1.js": "/sklansky/precache-manifest.cbdc6928badf6fb7411158dc7a7babb1.js",
   "service-worker.js": "/sklansky/service-worker.js"
 }

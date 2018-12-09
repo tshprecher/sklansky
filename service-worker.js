@@ -15,7 +15,7 @@ importScripts("/sklansky/workbox-v3.6.3/workbox-sw.js");
 workbox.setConfig({modulePathPrefix: "/sklansky/workbox-v3.6.3"});
 
 importScripts(
-  "/sklansky/precache-manifest.720c88eda3b7e2c35fcf53b641d38c9f.js"
+  "/sklansky/precache-manifest.cbdc6928badf6fb7411158dc7a7babb1.js"
 );
 
 workbox.clientsClaim();
