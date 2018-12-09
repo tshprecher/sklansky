@@ -360,8 +360,8 @@ class App extends React.Component<{}, AppState> {
                     Press numeric keys 1-8 to answer, 0 for never and 'n' to move to the next hand.
                     </div>
                 <div>
-                    <img className="App-card" src={`/${this.state.card1.toString()}.svg`} />
-                    <img className="App-card" src={`/${this.state.card2.toString()}.svg`} />
+                    <img className="App-card" src={`${window.location.href}/${this.state.card1.toString()}.svg`} />
+                    <img className="App-card" src={`${window.location.href}/${this.state.card2.toString()}.svg`} />
                 </div>
                 <AnswerPanel onClickHandler={this.handleUserInput} onChangeHandler={this.handleSelectChange} selected={this.state.selected} />
                 {this.state.answer !== undefined && (
